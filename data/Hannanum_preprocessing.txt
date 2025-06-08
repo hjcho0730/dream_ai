@@ -1,6 +1,0 @@
-1 N_안녕 X_하 E_세 J_요 F_KoNLPy N_사용 X_하 E_ㄴ N_형태소 N_분석 N_예제 E_ㅂ니다
-0 N_안녕 X_하 E_세 J_요 M_이 N_문구 N_테스트용 P_입 E_니다
-1 N_잘 X_있 E_어 N_친구 E_야
--1 F_hello F_everyone F_nice F_to F_meet F_you
-0 P_죽 E_다 P_죽 E_기 N_죽음 N_죽 J_고
-0 N_나 N_사과 P_먹 E_는다 N_순댓국
