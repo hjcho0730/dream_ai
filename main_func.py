@@ -1,9 +1,10 @@
 from utils import *
 
 def process_data(data, steps): ##pipeline
+    _data = deepcopy(data)
     for step in steps:
-        data = step(data)
-    return data
+        _data = step(_data)
+    return _data
 
 def time_decorator(func): ##시간 측정용 데코레이션
     off = False
@@ -52,9 +53,10 @@ def save(label, val, fileName, clear=True):
 
 def multi_decorator(func): ##시간 측정용 데코레이션
     def decorated(data):
+        datas = []
         for i in range(len(data)):
-            data[i] = func(data[i])
-        return data
+            datas.append(func(data[i]))
+        return datas
     return decorated
 
 #region #불용어(최소한 okt로는 더 이상 나뉘지 않는 형태소들임)

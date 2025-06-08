@@ -63,6 +63,19 @@ https://m.blog.naver.com/dsz08082/222205329191
 https://brunch.co.kr/@princox/202
 #패키지 정리
 
+https://hanmailco34.tistory.com/127
+https://growth-coder.tistory.com/129
+#git 활용
+https://nesoy.github.io/blog/Git-ignore
+https://velog.io/@hxeyexn/Git-.gitignore-%EB%8B%A4%EC%8B%9C-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
+#GIT ignore
+
+https://wikidocs.net/105471
+#pprint
+
+https://hipster4020.tistory.com/184
+#형태소 분석기 설치/사용자 사전
+
 # TODO (이 프로젝트랑 상관 없음)
 #https://namu.wiki/w/Arch%20Linux
 #captivate 뜻
