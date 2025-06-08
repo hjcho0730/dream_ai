@@ -1,0 +1,21 @@
+git config --global init.defaultBranch main : 깃은 기본 브랜치가 master로 설정되어있어서 main으로 바꿈
+
+git init : 깃을 사용하기 위해 초기화 
+
+git confing --global user.email "email@gmail.com" : 내 이메일 입력 (커밋한 사람 식별)
+git confing --global user.name "nickname" : 내 이름 입력 (커밋한 사람 식별)
+
+git add * : 모든 변경사항을 staging area 올림
+git status : staging area에 올라온 파일 확인
+
+git commit -m "버전1" : staging area에 올라온 파일들을 커밋함. 커밋 이름도 정함.
+git log : 커밋 아이디와 정보 확인 가능.
+git checkout abcd1234 : git log로 확인한 커밋 아이디를 보고 해당 커밋으로 되돌아감.
+git checkout - : 이전 커밋으로 되돌아감 
+
+git remote add origin [저장소 주소] : 외부 저장소와 연결
+git remote remove origin : 연결되어있는 외부 젖아소 끊기
+git remote -v : 현재 연결되어있는 외부 저장소 정보 
+
+git push origin main : main 브랜치에 커밋들을 푸쉬함
+git pull origin main : main 브랜치의 추가된 커밋들을 바당옴
