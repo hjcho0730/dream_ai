@@ -19,3 +19,7 @@ git remote -v : 현재 연결되어있는 외부 저장소 정보
 
 git push origin main : main 브랜치에 커밋들을 푸쉬함
 git pull origin main : main 브랜치의 추가된 커밋들을 바당옴
+
+#git add *
+#git commit -m ""
+#git push origin main
