@@ -1,0 +1,68 @@
+https://blog.naver.com/cjinnnn/222950485960
+#region / endregion
+
+https://python.plainenglish.io/just-stop-writing-python-functions-like-this-df4a69b56634
+#pipeline
+
+https://deep.chulgil.me/hangugeo-bulyongeo-riseuteu/#reference
+#불용어 리스트
+
+https://mr-doosun.tistory.com/24
+#불용어 리스트
+
+https://dtbb.tistory.com/21
+#unknown word 해결
+
+#gpt
+
+https://backenddeveloper.tistory.com/183
+#특징 추출 (너 아직 안 읽었어. 빨리 읽어)
+
+#pipeline 코딩 찾아보기
+
+https://brunch.co.kr/@rocketz/13
+#LLM 작동원리
+
+https://velog.io/@ekdl/Machine-Learning-12-%ED%85%8D%EC%8A%A4%ED%8A%B8-%EB%A7%88%EC%9D%B4%EB%8B%9DText-Mining
+#text mining 이란?
+
+https://jvvp.tistory.com/979
+#경로 합치기
+
+https://seoulitelab.tistory.com/entry/Python%ED%8C%8C%EC%9D%B4%EC%8D%AC-%ED%8C%8C%EC%9D%BC%EC%97%90-%EC%A0%80%EC%9E%A5%EB%90%9C-%EB%82%B4%EC%9A%A9%EC%9D%84-%EB%AA%A8%EB%91%90-%EC%82%AD%EC%A0%9C%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95
+#파일 비우기
+
+https://blockdmask.tistory.com/578
+#경로 구하기
+
+https://securityspecialist.tistory.com/90
+https://allriver.tistory.com/44
+#파일 다루기
+
+https://wikidocs.net/120208
+#파인 튜닝이란?
+
+https://homubee.tistory.com/38
+https://www.youtube.com/watch?v=o_vKT80BBkw
+https://m.blog.naver.com/dsz08082/222152427462?recommendTrackingCode=2
+#가상환경
+
+https://www.daleseo.com/python-time/
+#시간 출력
+
+https://lewisxyz000.tistory.com/35
+https://wikidocs.net/227614
+https://www.google.com/search?q=%EC%87%BC%E3%85%94%E3%85%91%E3%85%9C%E3%85%8E+%E3%85%A3%E3%85%91%E3%85%A0%E3%84%B1%E3%85%81%EA%B5%90&rlz=1C1GCEU_koKR1146KR1146&oq=%EC%87%BC%E3%85%94%E3%85%91%E3%85%9C%E3%85%8E+%E3%85%A3%E3%85%91%E3%85%A0%E3%84%B1%E3%85%81%EA%B5%90&gs_lcrp=EgZjaHJvbWUyBggAEEUYOdIBCDI5MDVqMGoxqAIAsAIA&sourceid=chrome&ie=UTF-8
+https://www.daleseo.com/python-typing/
+#타입힌트
+
+https://velog.io/@maxkmh/Python-14-Error-%EC%A2%85%EB%A5%98-%EC%98%88%EC%99%B8%EC%B2%98%EB%A6%AC
+https://m.blog.naver.com/dsz08082/222205329191
+#예외처리
+
+https://brunch.co.kr/@princox/202
+#패키지 정리
+
+# TODO (이 프로젝트랑 상관 없음)
+#https://namu.wiki/w/Arch%20Linux
+#captivate 뜻
