@@ -11,6 +11,7 @@ from sklearn.metrics import classification_report
 import numpy as np
 from pprint import pprint
 from copy import deepcopy
+from sklearn.feature_extraction.text import TfidfTransformer
 
 #의존성 관리를 위해 외부 라이브러리 및 내장 라이브러리 만 임포트
 
@@ -18,3 +19,15 @@ real_path = os.path.dirname(os.path.realpath(__file__))
 log_path = os.path.join(real_path, "data", "log.txt ")
 
 vocabulary = tuple()
+
+BigNum = 2000000
+tfidf = TfidfTransformer()
+
+
+def toArray(t):
+    X = []
+    if type(t) == type(list()):
+        X = np.array(t).reshape(len(t), -1)
+    else:
+        X = t.toarray()
+    return X

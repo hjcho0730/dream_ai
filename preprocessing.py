@@ -16,23 +16,23 @@ def clean_text(text):
 #region 형태소 추출
 
 analyzers: Final[Any] = { ##여기서 원하는 거 쓰면 됨
-    "Komoran": Komoran(),
-    "Okt": Okt(),
-    "Kkma": Kkma(),
-    "Hannanum": Hannanum()
+    "Komoran": Komoran(max_heap_size=BigNum),
+    "Okt": Okt(max_heap_size=BigNum),
+    "Kkma": Kkma(max_heap_size=BigNum),
+    "Hannanum": Hannanum(max_heap_size=BigNum),
 }
 
 
 def posToStr(pos):
     _pos = deepcopy(pos)
     for i in range(len(_pos)):
-        _pos[i] = (_pos[i][1] + "__")[:2]+_pos[i][0]
+        _pos[i] = (_pos[i][1] + "_____")[:5]+_pos[i][0]
     return _pos
 #endregion
 
 # (임시) 불용어
 #한나눔을 위한 불용어
-non_meaning_kor: Final[list[str]] = ['J_은', 'J_는', 'J_이', 'J_가', 'J_을', 'J_를', 'J_에', 'J_에서', 'J_의', 'J_으로', 'J_도', "J_으로", "J_로", "J_에", "J_에서"]
+non_meaning_kor: Final[list[str]] = []#['J_은', 'J_는', 'J_이', 'J_가', 'J_을', 'J_를', 'J_에', 'J_에서', 'J_의', 'J_으로', 'J_도', "J_으로", "J_로", "J_에", "J_에서"]
 non_meaning_eng: Final[list[str]] = []
 def non_meaning_remove(text):
     _text = deepcopy(text)
@@ -44,3 +44,4 @@ def non_meaning_remove(text):
             if i in _text:
                 _text.remove(i)
     return _text
+

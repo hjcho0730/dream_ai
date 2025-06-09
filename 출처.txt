@@ -76,6 +76,45 @@ https://wikidocs.net/105471
 https://hipster4020.tistory.com/184
 #형태소 분석기 설치/사용자 사전
 
+#SVM
+#f1-score
+https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#svc
+#SVC
+
+https://velog.io/@hyeongjun/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EC%82%AC%EC%9D%B4%ED%82%B7%EB%9F%B0sklearn-%EA%B8%B0%EC%B4%88
+#사이킷런(sklearn)
+
+https://engineer-mole.tistory.com/238
+https://www.freecodecamp.org/korean/news/paisseon-list-remove-paisseon-baeyeoleseo-hangmogeul-jegeohaneun-bangbeob/
+#remove in python
+
+?? 이것도 ?? : https://arxiv.org/abs/2210.01108
+** : https://github.com/e9t/nsmc
+https://github.com/songys/AwesomeKorean_Data
+https://velog.io/@fhflwhwl5/Python-KoBERT-7%EA%B0%80%EC%A7%80-%EA%B0%90%EC%A0%95%EC%9D%98-%EB%8B%A4%EC%A4%91%EA%B0%90%EC%84%B1%EB%B6%84%EB%A5%98%EB%AA%A8%EB%8D%B8-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0
+https://www.aihub.or.kr/aihubdata/data/view.do?pageIndex=1&currMenu=115&topMenu=100&srchDataTy=DATA003&srchOptnCnd=OPTNCND001&searchKeyword=%EA%B0%90%EC%A0%95&srchDetailCnd=DETAILCND001&srchOrder=ORDER001&srchPagePer=80&srchDataRealmCode=REALM002&aihubDataSe=data&dataSetSn=71603
+#데이터셋
+
+https://brunch.co.kr/@rocketz/13
+#LLM
+
+https://konlpy.org/ko/v0.4.2/
+#Konlpy
+
+https://suhye.tistory.com/entry/%E3%85%A3
+#BoW
+
+https://woogi-tech.tistory.com/entry/ML-%EC%84%A0%ED%98%95%EB%8C%80%EC%88%98-Linear-Transformation-in-Neural-Network
+https://deepinsight.tistory.com/165
+#transform
+
+https://everywhere-data.tistory.com/entry/Python-%ED%8F%B4%EB%8D%94-%EB%82%B4-%ED%8C%8C%EC%9D%BC-%EB%A6%AC%EC%8A%A4%ED%8A%B8-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0-osglob
+https://zzinnam.tistory.com/entry/Python%EC%97%90%EC%84%9C-JSON%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95for-%EC%B4%88%EA%B8%89%EC%9E%90
+#파일에서 데이터를 불러오기 위한 것들
+
 # TODO (이 프로젝트랑 상관 없음)
 #https://namu.wiki/w/Arch%20Linux
 #captivate 뜻
+
+https://github.com/hjcho0730/dream_ai
+#내 git 주소

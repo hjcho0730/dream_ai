@@ -34,6 +34,8 @@ def error(processName, e=None):
     log(f"error name: {exc_type}",           printTime=False, prefix="-")
     log(f"file name: {fname}",                  printTime=False, prefix="-")
     log(f"error line: {exc_tb.tb_lineno}", printTime=False, prefix="-")
+    if e != None:
+        log(f"Exception: {str(e)}", printTime=False, prefix="-")
     log("종료\n")
     
     exit(0)
@@ -55,6 +57,8 @@ def multi_decorator(func): ##시간 측정용 데코레이션
     def decorated(data):
         datas = []
         for i in range(len(data)):
+            if i % 500 == 0:
+                print(i*100/len(data))
             datas.append(func(data[i]))
         return datas
     return decorated
