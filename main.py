@@ -1,7 +1,7 @@
 if __name__ == "__main__":
     #region 임포트 & 준비
     from utils import *
-    from main_func import process_data, log, error, save, multi_decorator
+    from main_func import process_data, log, error, save, multi_decorator, res
     #endregion
     
     log("시작")
@@ -9,119 +9,86 @@ if __name__ == "__main__":
     #region 데이터 준비
     try:
         log("데이터 준비중...")
-
-        #texts = [ "오늘 너무 즐거운 하루였어", "기분이 상쾌하다", "행복한 기분이 드는 날이야", "짜증나는 일이 또 생겼어", "정말 최악의 하루야", "화가 머리끝까지 났다", "기분이 좋지는 않네", "웃음이 나는 좋은 날", "오늘은 운이 좋은 날이야",    "속상하고 우울해", "너무 답답하고 슬퍼", "화나는 일이 있어서 미치겠어", "편안한 하루를 보냈어", "오늘은 참 평화로웠어", "기분이 안정된다", "짜증이 났지만 참고 넘겼어", "분위기가 좋아서 웃음이 났어", "기분이 좋아서 노래를 불렀어",    "모두 나를 무시하는 것 같아", "억울하고 속상해", "왜 이렇게 힘든 거야", "행복한 일이 생겼어", "오늘 고마운 일이 있었어", "친절한 사람을 만나서 기뻤어", "무기력하고 아무것도 하기 싫다", "몸도 마음도 너무 피곤해", "우울해서 아무 말도 하기 싫어",    "사랑하는 사람과 좋은 시간을 보냈어", "이런 날씨 너무 좋아", "맛있는 거 먹고 기분이 좋아졌어",    "일이 다 망한 것 같아", "다 끝장난 느낌이야", "절망스럽고 괴로워","오늘 하루가 완벽했어", "운동하고 나니 기분 최고", "재밌는 영화 보고 왔어",    "진짜 어이없는 상황이었어", "실망이 너무 커", "분노가 치밀어 올라",    "마음이 차분해지고 좋아", "힐링되는 시간이었어", "산책하면서 기분 전환했어",    "혼자 있다는 게 너무 외로워", "눈물이 날 것 같아", "불안하고 초조해",    "오랜만에 친구 만나서 즐거웠어", "좋은 음악 들으니까 행복해", "기분이 좋아서 춤췄어",    "다신 이런 일 겪고 싶지 않아", "가슴이 답답하고 괴로워", "아무도 날 이해하지 못해" ]
-        #labels = [  1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0]  # 1: 긍정, 0: 부정
+        import data
         
-        texts = []
-        labels = []
+        datas = []
 
-        import os
-
-        path = os.path.join(real_path, "datas", "raw")
-        file_list = os.listdir(path)
-
-        jsonFiles = [file for file in file_list if file.endswith('.json')]
+        datas.append( data.getMovieReviewData(limits=10000, max_length=50, min_length=5) )
         
-        import json
+        texts, labels = data.merge_tuples(*datas)
         
-        for i in jsonFiles:
-            p = os.path.join(path, i)
-            with open(p, 'r') as f:
-                json_data = json.load(f)    
-                for i in json_data:
-                    if len(i["review"]) >= 32:
-                        continue
-                    texts.append(i["review"])
-                    score = float(i["rating"])-7
-                    if score <= 0:
-                        score = 0
-                    else:
-                        score = 1
-                    labels.append(score)
-            if len(texts) >= 10000:
-                break
-        print(len(texts))
-        log("데이터 준비 완료")
+        log(f"데이터 준비 완료 ({len(texts)}개)")
     except Exception as e:    
         error("데이터 준비", e)
     #endregion
-    using_analyzer = "Okt"
+    using_analyzer = "Komoran"
     #region 전처리(정규화 등) (토큰화)
     try:
-        log(f"전처리 준비중... (분석기: {using_analyzer})")
-
+        log("전처리 준비중...")
         import preprocessing
         
-        pre_steps = [
-            multi_decorator(preprocessing.clean_text), #정규화
-            multi_decorator(preprocessing.analyzers[using_analyzer].pos), #형태소 분석
-            multi_decorator(preprocessing.posToStr),
-            multi_decorator(preprocessing.non_meaning_remove) #불용어
-        ]
+        pre_steps = preprocessing.getNoramlPipeline(using_analyzer=using_analyzer) #pipeline
 
-        log("전처리 중...")
+        log(f"전처리 중... (분석기: {using_analyzer})")
         pre_texts = process_data(texts, pre_steps)
+
         log("전처리 완료")
     except Exception as e:    
         error("전처리", e)
     #endregion
+    save_preDate = False
     #region 전처리 데이터 저장 (토큰 전처리)
-    try:
-        log("전처리 데이터 저장중...")
-        save(labels, pre_texts, f"{using_analyzer}_preprocessing.txt")
-        log("전처리 데이터 저장 완료")
-    except Exception as e:    
-        error("전처리 데이터 저장", e)
+    if save_preDate:
+        try:
+            log("전처리 데이터 저장중...")
+            save(labels, pre_texts, f"{using_analyzer}_preprocessing.txt")
+            log("전처리 데이터 저장 완료")
+        except Exception as e:    
+            error("전처리 데이터 저장", e)
+    else:
+        log("전처리 데이터 저장 안함")
     #endregion
     using_extraction = "TF-IDF"
     n_gram = True
     #region 특징 추출 (벡터화)
     try:
-        log(f"특징 추출 준비중... (사용 방법: {using_extraction})")
-
+        log(f"특징 추출 준비중... (사용하는 방법: {using_extraction})")
         import feature_extraction
 
-        extraction_pre_steps = {
-            "BoW": [
-                multi_decorator(feature_extraction.vocabularyCreate), #사전 제작
-            ],
-            "TF-IDF": [
-                multi_decorator(feature_extraction.vocabularyCreate),
-                multi_decorator(feature_extraction.document_to_vector),
-                feature_extraction.TF_IDF_init
-            ]
-        }
-        extraction_steps = {
-            "BoW": [
-                multi_decorator(feature_extraction.document_to_vector)
-            ],
-            "TF-IDF": [
-                multi_decorator(feature_extraction.document_to_vector),
-                tfidf.transform,
-            ]
-        }
+        extraction_pre_steps = feature_extraction.getNoramlPrePipeline(using_extraction) #pipeline
+        extraction_steps = feature_extraction.getNoramlPipeline(using_extraction) #pipeline
         
-        log("특징 추출 중...")
+        log("특징 추출 시작")
+        
         if n_gram:
+            log("n-gram 적용 중...")
             pre_texts = multi_decorator(feature_extraction.nGram_setting)(pre_texts)
-        extracton_pre_texts = process_data(pre_texts, extraction_pre_steps[using_extraction])
-        extracton_texts = process_data(pre_texts, extraction_steps[using_extraction])
+
+        log("사전 작업 진행 중...")
+        extracton_pre_texts = process_data(pre_texts, extraction_pre_steps)
+        
+        log("작업 중...")
+        extracton_texts = process_data(pre_texts, extraction_steps)
+        
         log("특징 추출 완료")
     except Exception as e:    
         error("특징 추출", e)
     #endregion
+    save_extractionDate = False
     #region 특징 추출 데이터 저장 
-    try:
-        log("특징 추출 데이터 저장중...")
-        save(labels, extracton_texts, f"{using_analyzer}_{using_extraction}_featureExtraction.txt")
-        log("특징 추출 데이터 저장 완료")
-    except Exception as e:    
-        error("특징 추출 데이터 저장", e)
+    if save_extractionDate:
+        try:
+            log("특징 추출 데이터 저장중...")
+            save(labels, extracton_texts, f"{using_analyzer}_{using_extraction}_featureExtraction.txt")
+            log("특징 추출 데이터 저장 완료")
+        except Exception as e:    
+            error("특징 추출 데이터 저장", e)
+    else:
+        log("특징 추출 데이터 저장 안함")
     #endregion
     random_state = 42
     test_size = 0.2
-    using_model = "SVC-linear"
+    using_model = "SGDClassifier"
     #region 학습
     try:
         #학습 준비
@@ -135,17 +102,14 @@ if __name__ == "__main__":
 
         # SVM 모델 학습
         log(f"학습 중... (모델 이름: {using_model})")
-        models = {
-            #SVC
-            "SVC-linear" : SVC(kernel='linear'),
-            "SVC-rbf" : SVC(kernel='rbf'),
-            "SVC-poly" : SVC(kernel='poly'),
-            "SVC-sigmoid" : SVC(kernel='sigmoid'),
-            #
-        }
-        svm_model = deepcopy(models[using_model]) 
+
+        from models import getModels
+        svm_model = getModels(using_model) 
+        
+        s = time.time()
         svm_model.fit(X_train, y_train)
-        log("학습 완료")
+        
+        log(f"학습 완료 (소요 시간: {time.time()-s})")
     except Exception as e:    
         error("학습", e)
     #endregion
@@ -153,11 +117,12 @@ if __name__ == "__main__":
     try:
         # 평가
         log("평가 중...")
+        s = time.time()
         y_pred = svm_model.predict(X_test)
         report = classification_report(y_test, y_pred)
         print("=== 평가 결과 ===")
         print(report)
-        log("평가 완료")
+        log(f"평가 완료 (소요 시간: {time.time()-s})")
     except Exception as e:    
         error("평가", e)
     #endregion
@@ -172,22 +137,24 @@ if __name__ == "__main__":
             t += ")"
         log(t)
 
+        #pipeline
         getVec_steps = \
             pre_steps + \
              ([multi_decorator(feature_extraction.nGram_setting)] if n_gram else []) \
-              + extraction_steps[using_extraction] #전처리 + 벡터화
+              + extraction_steps #전처리 + 벡터화 
 
         # 새 문장 예측
-        log("새 문장 예측중...")
+        log("새 문장 예측 준비 중...")
         new_vec = process_data(new_text, getVec_steps) #벡터로 변환
 
+        log("새 문장 예측 중...")
         new_vec = toArray(new_vec)
         predictions = svm_model.predict(new_vec)
 
         #예측값 출력
         log("새 문장 예측완료")
         for text, pred in zip(new_text, predictions):
-            label = "긍정" if pred == 1 else "부정"
+            label = res[pred]
             print(f'"{text}" → {label}')
         
         #사용자 입력 예측하기
@@ -195,10 +162,12 @@ if __name__ == "__main__":
         while "" != (s := input()):
             new_vec = process_data([s], getVec_steps) #벡터로 변환
             new_vec = toArray(new_vec)
+
             predictions = svm_model.predict(new_vec)
 
-            label = "긍정" if predictions[0] == 1 else "부정"
+            label =  res[predictions[0]]
             print(f'"{s}" → {label}')
+        log("사용자 입력 예측 완료")
     except Exception as e:    
         error("예측", e)
     #endregion

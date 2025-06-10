@@ -22,9 +22,8 @@ analyzers: Final[Any] = { ##여기서 원하는 거 쓰면 됨
     "Hannanum": Hannanum(max_heap_size=BigNum),
 }
 
-
-def posToStr(pos):
-    _pos = deepcopy(pos)
+def posToStr(pos: list[tuple[str]]) -> list[tuple[str]]:
+    _pos = pos[:]
     for i in range(len(_pos)):
         _pos[i] = (_pos[i][1] + "_____")[:5]+_pos[i][0]
     return _pos
@@ -45,3 +44,13 @@ def non_meaning_remove(text):
                 _text.remove(i)
     return _text
 
+def getNoramlPipeline(using_analyzer):
+    from main_func import multi_decorator
+    pre_steps = [
+        multi_decorator(clean_text), #정규화
+        multi_decorator(analyzers[using_analyzer].pos), #형태소 분석
+        multi_decorator(posToStr),
+        # multi_decorator(preprocessing.non_meaning_remove) #불용어
+    ]
+
+    return pre_steps
