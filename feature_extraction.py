@@ -9,19 +9,21 @@ def vocabularyCreate(tokenized_document):
 
 def vocabularyToDict(doc):
     global vocabulary, vector
+    dd = {}
     for idx, i in enumerate(vocabulary):
-        vocabularyDict[i] = idx
-    
+        dd[i] = idx
+    DDD.setDict(dd)
     return doc
 
-def document_to_vector(doc):
-    global vocabularyDict, vector
-    vector = csr_matrix([], shape=(len(vocabularyDict), 1))#np.zeros((len(vocabularyDict), ))
-    for word in doc:
-        if word in vocabularyDict:
-            index = vocabularyDict[word]#vocabulary.index(word)
-            vector[index] += 1
-    return vector
+def document_to_vector(docs):
+    vocabularyDict = DDD.getDict()
+    vector = lil_matrix((len(docs), len(vocabularyDict)))
+    for i in range(len(docs)):
+        for word in docs[i]:
+            if word in vocabularyDict:
+                index = vocabularyDict[word]#vocabulary.index(word)
+                vector[i, index] += 1
+    return vector.tocsr()
 #endregion
 #region n-gram
 def nGram_setting(tokenized_document):
@@ -34,7 +36,7 @@ def nGram_setting(tokenized_document):
 #endregion
 #TF-IDF (단어 빈도 vs 문서 중요도)
 def TF_IDF_init(bow_matrix):
-    tfidf.fit(bow_matrix)
+    tfidf.tfidf.fit(bow_matrix)
     return bow_matrix
 
 def prune_low_tfidf(tfidf_matrix: csr_matrix, threshold: float = 0.005) -> csr_matrix:
@@ -71,7 +73,7 @@ def getNoramlPrePipeline(using_extraction):
         extraction_pre_steps = [
             multi_decorator(vocabularyCreate),
             vocabularyToDict,
-            multi_decorator(document_to_vector),
+            document_to_vector,
             TF_IDF_init,
         ]
 
@@ -91,8 +93,8 @@ def getNoramlPipeline(using_extraction):
         ]
     elif using_extraction == "TF-IDF":
         extraction_steps = [
-            multi_decorator(document_to_vector),
-            tfidf.transform,
+            document_to_vector,
+            tfidf.tfidf.transform,
             prune_low_tfidf,
         ]
 

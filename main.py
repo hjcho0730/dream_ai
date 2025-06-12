@@ -13,7 +13,7 @@ if __name__ == "__main__":
         
         datas = []
 
-        datas.append( data.getMovieReviewData(limits=10000, max_length=50, min_length=5) )
+        datas.append( data.getMovieReviewData(limits=-1, max_length=50, min_length=5) ) ##영화 리뷰 만으론 긍정/부정 예측이 사실상 불가능...
         
         texts, labels = data.merge_tuples(*datas)
         
@@ -36,9 +36,9 @@ if __name__ == "__main__":
     except Exception as e:    
         error("전처리", e)
     #endregion
-    save_preDate = False
+    save_preData = False
     #region 전처리 데이터 저장 (토큰 전처리)
-    if save_preDate:
+    if save_preData:
         try:
             log("전처리 데이터 저장중...")
             save(labels, pre_texts, f"{using_analyzer}_preprocessing.txt")
@@ -74,9 +74,9 @@ if __name__ == "__main__":
     except Exception as e:    
         error("특징 추출", e)
     #endregion
-    save_extractionDate = False
+    save_extractionData = False
     #region 특징 추출 데이터 저장 
-    if save_extractionDate:
+    if save_extractionData:
         try:
             log("특징 추출 데이터 저장중...")
             save(labels, extracton_texts, f"{using_analyzer}_{using_extraction}_featureExtraction.txt")
@@ -104,21 +104,38 @@ if __name__ == "__main__":
         log(f"학습 중... (모델 이름: {using_model})")
 
         from models import getModels
-        svm_model = getModels(using_model) 
-        
+        model = getModels(using_model) 
+
         s = time.time()
-        svm_model.fit(X_train, y_train)
+        model.fit(X_train, y_train)
         
         log(f"학습 완료 (소요 시간: {time.time()-s})")
     except Exception as e:    
         error("학습", e)
+    #endregion
+    save_model = True
+    #region 모델 저장 
+    if save_model:
+        try:
+            log("모델 저장중...")
+            fileName = f"{using_model}_{using_analyzer}_{using_extraction}{"_nGram" if n_gram else ""}" 
+            
+            path = os.path.join(real_path, "models", fileName)
+            joblib.dump(model, path+"_model.pkl")
+            joblib.dump(DDD.getDict(), path+"_dict.pkl")
+            joblib.dump(tfidf.tfidf, path+"_tfidf.pkl")
+            log("모델 저장 완료")
+        except Exception as e:    
+            error("모델 저장", e)
+    else:
+        log("모델 저장 안함")
     #endregion
     #region 평가
     try:
         # 평가
         log("평가 중...")
         s = time.time()
-        y_pred = svm_model.predict(X_test)
+        y_pred = model.predict(X_test)
         report = classification_report(y_test, y_pred)
         print("=== 평가 결과 ===")
         print(report)
@@ -149,7 +166,7 @@ if __name__ == "__main__":
 
         log("새 문장 예측 중...")
         new_vec = toArray(new_vec)
-        predictions = svm_model.predict(new_vec)
+        predictions = model.predict(new_vec)
 
         #예측값 출력
         log("새 문장 예측완료")
@@ -163,7 +180,7 @@ if __name__ == "__main__":
             new_vec = process_data([s], getVec_steps) #벡터로 변환
             new_vec = toArray(new_vec)
 
-            predictions = svm_model.predict(new_vec)
+            predictions = model.predict(new_vec)
 
             label =  res[predictions[0]]
             print(f'"{s}" → {label}')

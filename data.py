@@ -32,6 +32,8 @@ def getMovieReviewData(limits = 7000, max_length=64, min_length=1):
                     score = 1
                 texts.append(i["review"])
                 labels.append(score)
+        if limits == -1:
+            continue
         if len(texts) >= limits:
             break
     return (texts[:limits], labels[:limits])
@@ -39,6 +41,9 @@ def getMovieReviewData(limits = 7000, max_length=64, min_length=1):
 #
 
 def merge_tuples(*tuples):
+    if len(tuples) == 0:
+        return [], []
+    
     return tuple(
         list(chain.from_iterable(group)) for group in zip(*tuples)
     )

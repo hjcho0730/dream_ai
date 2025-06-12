@@ -114,6 +114,10 @@ https://zzinnam.tistory.com/entry/Python%EC%97%90%EC%84%9C-JSON%EC%9D%84-%EC%82%
 https://wikidocs.net/31698
 #TF-IDF
 
+https://nicola-ml.tistory.com/88 #모델 정확도 평가
+https://gaussian37.github.io/ml-sklearn-saving-model/ #사이킷런 모델 저장
+
+
 # TODO (이 프로젝트랑 상관 없음)
 #https://namu.wiki/w/Arch%20Linux
 #captivate 뜻

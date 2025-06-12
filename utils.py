@@ -19,7 +19,10 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.svm import SVC, LinearSVC
 from sklearn.linear_model import SGDClassifier
 
-from scipy.sparse import csr_matrix
+import pickle
+import joblib
+
+from scipy.sparse import csr_matrix, lil_matrix
 
 #의존성 관리를 위해 외부 라이브러리 및 내장 라이브러리 만 임포트
 
@@ -27,16 +30,27 @@ real_path = os.path.dirname(os.path.realpath(__file__))
 log_path = os.path.join(real_path, "data", "log.txt ")
 
 vocabulary = set()
-vocabularyDict = dict()
+class DataDict:
+    vocabularyDict = dict()
+    def getDict(self):
+        return self.vocabularyDict
+
+    def setDict(self, d):
+        self.vocabularyDict = d
+DDD = DataDict()
 
 BigNum = 2000000
-tfidf = TfidfTransformer()
-vector = np.array([0])
+class DataTransformer:
+    tfidf = TfidfTransformer()
+    def set(self, trans):
+        self.tfidf = trans
+tfidf = DataTransformer()
+# vector = np.array([0])
 
 def toArray(t):
-    X = []
-    if type(t) == type(list()):
-        X = np.array(t).reshape(len(t), -1)
-    else:
-        X = t.toarray()
+    # X = []
+    # if type(t) == type(list()):
+    X = csr_matrix(t)
+    # else:
+    #     X = t.toarray()
     return X
