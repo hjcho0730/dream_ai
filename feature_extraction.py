@@ -15,6 +15,11 @@ def vocabularyToDict(doc):
     DDD.setDict(dd)
     return doc
 
+def deleteTopN(doc, n=50):
+    data = sorted(DDD.getDict().items(), reverse=True, key=lambda x: x[1])[:n]
+    for i in range(min(n, len(data))):
+        DDD.deleteVal(data[i][0])
+    return doc
 def document_to_vector(docs):
     vocabularyDict = DDD.getDict()
     vector = lil_matrix((len(docs), len(vocabularyDict)))
@@ -31,7 +36,7 @@ def nGram_setting(tokenized_document):
     ngram_tokens = []
     for n in range(1, max_n+1):
         if len(tokenized_document) >= n:
-            ngram_tokens += [''.join(tokenized_document[i:i+n]) for i in range(len(tokenized_document)-n+1)]
+            ngram_tokens.extend(''.join(tokenized_document[i:i+n]) for i in range(len(tokenized_document)-n+1))
     return ngram_tokens
 #endregion
 #TF-IDF (단어 빈도 vs 문서 중요도)
@@ -68,11 +73,13 @@ def getNoramlPrePipeline(using_extraction):
         extraction_pre_steps = [
             multi_decorator(vocabularyCreate), #사전 제작
             vocabularyToDict,
+            deleteTopN,
         ]
     elif using_extraction == "TF-IDF":
         extraction_pre_steps = [
             multi_decorator(vocabularyCreate),
             vocabularyToDict,
+            deleteTopN,
             document_to_vector,
             TF_IDF_init,
         ]

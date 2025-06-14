@@ -2,30 +2,32 @@ from utils import *
 
 #region 정규화-특수문자(마침표 등) 제거
 def clean_text(text): 
+    import re
     _text = deepcopy(text)
-    if type(_text) == type("string"):    
+    if type(_text) == type("string"):
         _text = re.sub(r"[^가-힣a-zA-Z0-9\s]", "", _text)  # 한글, 영문, 숫자, 공백 제외 모두 제거
         _text = re.sub(r"\s+", " ", _text).strip()  # 연속 공백 1개로 치환
     elif type(_text) == type(list()):
         for i in range(len(_text)):
-            _text = re.sub(r"[^가-힣a-zA-Z0-9\s]", "", _text)  # 한글, 영문, 숫자, 공백 제외 모두 제거
-            _text = re.sub(r"\s+", " ", _text).strip()  # 연속 공백 1개로 치환
+            t = re.sub(r"[^가-힣a-zA-Z0-9\s]", "", _text[i])  # 한글, 영문, 숫자, 공백 제외 모두 제거
+            _text[i] = re.sub(r"\s+", " ", t).strip()  # 연속 공백 1개로 치환
     return _text
 #endregion
 
 #region 형태소 추출
 
+from konlpy.tag import Okt, Kkma, Komoran, Hannanum
 analyzers: Final[Any] = { ##여기서 원하는 거 쓰면 됨
-    "Komoran": Komoran(max_heap_size=BigNum),
-    "Okt": Okt(max_heap_size=BigNum),
-    "Kkma": Kkma(max_heap_size=BigNum),
-    "Hannanum": Hannanum(max_heap_size=BigNum),
+    "Komoran": Komoran(),
+    "Okt": Okt(),
+    "Kkma": Kkma(),
+    "Hannanum": Hannanum(),
 }
 
 def posToStr(pos: list[tuple[str]]) -> list[tuple[str]]:
     _pos = pos[:]
     for i in range(len(_pos)):
-        _pos[i] = (_pos[i][1] + "_____")[:5]+_pos[i][0]
+        _pos[i] = ''.join([_pos[i][0], "/", _pos[i][1]])
     return _pos
 #endregion
 

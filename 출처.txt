@@ -117,6 +117,17 @@ https://wikidocs.net/31698
 https://nicola-ml.tistory.com/88 #모델 정확도 평가
 https://gaussian37.github.io/ml-sklearn-saving-model/ #사이킷런 모델 저장
 
+https://rfriend.tistory.com/704
+#dict 상위 n개 데이터
+https://statools.tistory.com/286
+#dict 요소 삭제
+
+https://brunch.co.kr/@princox/180
+#*args, **kwargs
+
+https://www.quora.com/How-can-I-read-a-CSV-file-in-Python-line-by-line
+https://nerogarret.tistory.com/63
+#read CSV line by line
 
 # TODO (이 프로젝트랑 상관 없음)
 #https://namu.wiki/w/Arch%20Linux
@@ -124,3 +135,12 @@ https://gaussian37.github.io/ml-sklearn-saving-model/ #사이킷런 모델 저�
 
 https://github.com/hjcho0730/dream_ai
 #내 git 주소
+
+https://www.urldecoder.org/ko/
+#인코딩
+https://developer.mozilla.org/ko/docs/Glossary/Percent-encoding
+#퍼센트 인코딩
+
+https://gorokke.tistory.com/11
+https://wikidocs.net/7014
+#파이썬 문법

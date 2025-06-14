@@ -13,7 +13,7 @@ if __name__ == "__main__":
         
         datas = []
 
-        datas.append( data.getMovieReviewData(limits=-1, max_length=50, min_length=5) ) ##영화 리뷰 만으론 긍정/부정 예측이 사실상 불가능...
+        datas.append( data.getMovieReviewData(usingMethod="csv", limits=-1, max_length=-1, min_length=1) ) ##영화 리뷰 만으론 긍정/부정 예측이 사실상 불가능...
         
         texts, labels = data.merge_tuples(*datas)
         
@@ -94,10 +94,11 @@ if __name__ == "__main__":
         #학습 준비
         log(f"학습 준비중... (랜덤 시드: {random_state})")
         X = toArray(extracton_texts)
-        labels = np.array(labels).reshape(-1)
+        labels = np.array(labels).reshape(len(labels), )
         
         # 학습/테스트 분할
         log(f"데이터 분할 중... (테스트 데이터 비율: {test_size})")
+        from sklearn.model_selection import train_test_split
         X_train, X_test, y_train, y_test = train_test_split(X, labels, test_size=0.2, random_state=random_state, stratify=labels) 
 
         # SVM 모델 학습
@@ -121,9 +122,10 @@ if __name__ == "__main__":
             fileName = f"{using_model}_{using_analyzer}_{using_extraction}{"_nGram" if n_gram else ""}" 
             
             path = os.path.join(real_path, "models", fileName)
-            joblib.dump(model, path+"_model.pkl")
-            joblib.dump(DDD.getDict(), path+"_dict.pkl")
-            joblib.dump(tfidf.tfidf, path+"_tfidf.pkl")
+            import joblib
+            joblib.dump(model, ''.join([ path, "_model.pkl" ]))
+            joblib.dump(DDD.getDict(), ''.join([ path, "_dict.pkl"]))
+            joblib.dump(tfidf.tfidf, ''.join([ path, "_tfidf.pkl"]))
             log("모델 저장 완료")
         except Exception as e:    
             error("모델 저장", e)
@@ -136,7 +138,10 @@ if __name__ == "__main__":
         log("평가 중...")
         s = time.time()
         y_pred = model.predict(X_test)
+        
+        from sklearn.metrics import classification_report
         report = classification_report(y_test, y_pred)
+        
         print("=== 평가 결과 ===")
         print(report)
         log(f"평가 완료 (소요 시간: {time.time()-s})")
@@ -149,16 +154,19 @@ if __name__ == "__main__":
         # 새 문장 예측을 위한 pipeline
         t = f"새 문장 준비 중... (\"{new_text[0]}\""
         if len(new_text) >= 2:
-            t += f" ... \"{new_text[-1]})\""
-        else:
-            t += ")"
+            t = ''.join( [t, f" ... \"{new_text[-1]}\""] )
+            
+        t =  ''.join( [t, ")"] )
         log(t)
 
         #pipeline
-        getVec_steps = \
-            pre_steps + \
-             ([multi_decorator(feature_extraction.nGram_setting)] if n_gram else []) \
-              + extraction_steps #전처리 + 벡터화 
+        getVec_steps = list(chain.from_iterable(
+            [
+                pre_steps,
+                [multi_decorator(feature_extraction.nGram_setting)] if n_gram else [],
+                extraction_steps,
+            ]
+        )) #전처리 / 벡터화 
 
         # 새 문장 예측
         log("새 문장 예측 준비 중...")
@@ -171,7 +179,7 @@ if __name__ == "__main__":
         #예측값 출력
         log("새 문장 예측완료")
         for text, pred in zip(new_text, predictions):
-            label = res[pred]
+            label = res[int(pred)]
             print(f'"{text}" → {label}')
         
         #사용자 입력 예측하기
@@ -182,7 +190,7 @@ if __name__ == "__main__":
 
             predictions = model.predict(new_vec)
 
-            label =  res[predictions[0]]
+            label =  res[int(predictions[0])]
             print(f'"{s}" → {label}')
         log("사용자 입력 예측 완료")
     except Exception as e:    
@@ -192,14 +200,16 @@ if __name__ == "__main__":
     log("종료\n")
 
 # 계획
-#(보류)1. 데이터를 불러온다 (파일에서)
+#(완료)1. 데이터를 불러온다 (파일에서)
 #(완료)2. 전처리를 한다. (다른 파일에 저장하기)
 #(완료)3. 특징추출을 한다(다른 파일에 저장하기) (이 데이터로 학습을 진행)
 #(완료)4. 학습 시킨다.
 #(완료)5. 테스트 한다.
 
 #TODO
-#데이터 준비
-#모델 저장
 #특징 추출 방법 추가
 #ui 만들기
+#딥러닝 모델 추가
+#특징 추출 최적화 -> mecab?
+
+#663

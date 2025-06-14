@@ -7,38 +7,97 @@ if __name__ == "__main__":
       logClear()
 
 #data1
-def getMovieReviewData(limits = 7000, max_length=64, min_length=1):
+def getMovieReviewData(usingMethod="csv", *args, **kwargs):
+    if usingMethod == "csv":
+        return getMovieReviewDataByCsv(*args, **kwargs)
+    elif usingMethod == "json":
+        return getMovieReviewDataByJson(*args, **kwargs)
+    #else
+    return getMovieReviewDataByJson(*args, **kwargs)
+def getMovieReviewDataByCsv(limits = 7000, max_length=64, min_length=1): # 최대 199176개
+    import csv 
     texts = []
     labels = []
 
     path = os.path.join(real_path, "datas", "nsmc_raw") # 원래 파일 이름은 raw였음
     file_list = os.listdir(path)
 
-    jsonFiles = [file for file in file_list if file.endswith('.json')]
+    txtFiles = tuple(file for file in file_list if file.endswith('.txt'))
     
-    for i in jsonFiles:
+    for i in txtFiles:
         p = os.path.join(path, i)
-        with open(p, 'r') as f:
-            json_data = json.load(f)    
-            for i in json_data:
-                if len(i["review"]) >= max_length or len(i["review"]) < min_length:
+        
+        with open(p, "r") as f:
+            data = csv.reader(f, delimiter="\t")
+            for row in list(data)[1:]: 
+                line = row[0]
+                text = '\t'.join(row[1:len(row)-1])
+                label = row[-1]
+
+                #print(', '.join(row)) 
+
+                if max_length != -1 and len(text) > max_length:
                     continue
-                score = float(i["rating"])
-                if score >= 8:
-                    score = 2
-                elif score <= 4:
-                    score = 0
-                else:
-                    score = 1
-                texts.append(i["review"])
+                if min_length != -1 and len(text) < min_length:
+                    continue
+                score = label
+
+                texts.append(text)
                 labels.append(score)
+                if limits == -1:
+                    continue
+                if len(texts) >= limits:
+                    break
         if limits == -1:
             continue
         if len(texts) >= limits:
             break
     return (texts[:limits], labels[:limits])
 
-#
+def getMovieReviewDataByJson(limits = 7000, max_length=64, min_length=1):# 최대 709812개
+    import json
+    texts = []
+    labels = []
+
+    path = os.path.join(real_path, "datas", "nsmc_raw") # 원래 파일 이름은 raw였음
+    file_list = os.listdir(path)
+
+    jsonFiles = tuple(file for file in file_list if file.endswith('.json'))
+
+    n = -1
+    l = len(jsonFiles)
+    print(l, "개의 파일")
+    for i in jsonFiles:
+        n+=1
+        if n % 100  == 0:
+            print(n*100/l)
+
+        p = os.path.join(path, i)
+        with open(p, 'r') as f:
+            json_data = json.load(f)    
+            for i in json_data:
+                if max_length != -1 and len(i["review"]) > max_length:
+                    continue
+                if min_length != -1 and len(i["review"]) < min_length:
+                    continue
+                score = float(i["rating"])
+                if score >= 9:
+                    score = 1
+                else: #if score <= 4:
+                    score = 0
+                texts.append(i["review"])
+                labels.append(score)
+                if limits == -1:
+                    continue
+                if len(texts) >= limits:
+                    break
+        if limits == -1:
+            continue
+        if len(texts) >= limits:
+            break
+    return (texts[:limits], labels[:limits])
+
+####
 
 def merge_tuples(*tuples):
     if len(tuples) == 0:
