@@ -96,7 +96,8 @@ def getNoramlPipeline(using_extraction):
     extraction_steps = []
     if using_extraction == "BoW":
         extraction_steps = [
-            multi_decorator(document_to_vector)
+            document_to_vector,
+            #tfidf.tfidf.transform,
         ]
     elif using_extraction == "TF-IDF":
         extraction_steps = [

@@ -36,7 +36,7 @@ def cmd():
 #endregion
 #region 창 설정
 root.title('꿈나비 댓글 분류기')
-root.geometry("700x400+100+100")
+root.geometry("500x400+100+100")
 root.resizable(False, False)
 #endregion
 #region 위젯 생성

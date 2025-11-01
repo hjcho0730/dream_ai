@@ -8,14 +8,14 @@ if __name__ == "__main__":
     import numpy as np
     #endregion
     
-    #설정
+    #region 설정
     MovieReviewLoadMode= 0 # csv: 0, json: 1, False: 2
     MovieReviewLimit= -1
     mode= ["csv", "json", False]
 
     save_preData = False           #전처리 데이터 저장 여부
     save_extractionData = False #특징 추출 데이터 저장 여부
-    save_model = True               #모델 저장 여부
+    save_model = False#True               #모델 저장 여부
 
     using_analyzer = "Komoran" #형태소 분석기(전처리)
 
@@ -27,6 +27,7 @@ if __name__ == "__main__":
     using_model = "SGDClassifier" #모델 이름 설정
 
     new_text = ["기분이 정말 좋아", "너무 짜증난다"] #예측할 문장들
+    #endregion
     
     #region 데이터 준비
     try:
@@ -35,7 +36,7 @@ if __name__ == "__main__":
         
         datas = []
 
-        datas.append( data.getMovieReviewData(usingMethod=mode[MovieReviewLoadMode], limits=MovieReviewLimit, max_length=-1, min_length=1) ) ##영화 리뷰 만으론 긍정/부정 예측이 사실상 불가능...
+        datas.append( data.getMovieReviewData(usingMethod=mode[MovieReviewLoadMode], limits=MovieReviewLimit, max_length=-1, min_length=1) ) ##영화 리뷰 만으론 긍정/부정 예측이 힘듦...
         
         texts, labels = data.merge_tuples(*datas)
         
@@ -112,7 +113,7 @@ if __name__ == "__main__":
     try:
         #학습 준비
         log(f"학습 준비중... (랜덤 시드: {random_state})")
-        X = toArray(extracton_texts)
+        X= toArray(extracton_texts)
         labels = np.array(labels).reshape(len(labels), )
         
         # 학습/테스트 분할
@@ -151,11 +152,12 @@ if __name__ == "__main__":
     else:
         log("모델 저장 안함")
     #endregion
+  
     #region 평가
     try:
         # 평가
         log("평가 중...")
-        s = time.time()
+        s = time.time() 
         y_pred = model.predict(X_test)
         
         from sklearn.metrics import classification_report

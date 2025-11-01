@@ -21,40 +21,31 @@ def getMovieReviewDataByCsv(limits = 7000, max_length=64, min_length=1): # 최�
     import csv 
     texts = []
     labels = []
-
     path = os.path.join(real_path, "datas", "nsmc_raw") # 원래 파일 이름은 raw였음
     file_list = os.listdir(path)
 
     txtFiles = tuple(file for file in file_list if file.endswith('.txt'))
-    
     for i in txtFiles:
         p = os.path.join(path, i)
-        
         with open(p, "r") as f:
             data = csv.reader(f, delimiter="\t")
             for row in list(data)[1:]: 
-                line = row[0]
+                # line = row[0]
                 text = '\t'.join(row[1:len(row)-1])
                 label = row[-1]
 
                 #print(', '.join(row)) 
 
-                if max_length != -1 and len(text) > max_length:
+                if (max_length != -1 and len(text) > max_length) or \
+                      ( min_length != -1 and len(text) < min_length):
                     continue
-                if min_length != -1 and len(text) < min_length:
-                    continue
-                score = label
 
                 texts.append(text)
-                labels.append(score)
-                if limits == -1:
-                    continue
-                if len(texts) >= limits:
+                labels.append(label)
+                if limits != -1 and len(texts) >= limits:
                     break
-        if limits == -1:
-            continue
-        if len(texts) >= limits:
-            break
+        if limits != -1 and len(texts) >= limits:
+                break
     return (texts[:limits], labels[:limits])
 
 def getMovieReviewDataByJson(limits = 7000, max_length=64, min_length=1):# 최대 709812개
@@ -115,3 +106,21 @@ def merge_tuples(*tuples):
     return tuple(
         list(chain.from_iterable(group)) for group in zip(*tuples)
     )
+
+
+"""
+def getReviewDataByCsv(...):
+   ...
+   for i in txtFiles:
+      p= os.path.join(path, i)
+      with open(p, "r") as f:
+         data= csv.reader(f, delimiter="\t")
+         for row in list(data)[1:]: 
+            text='\t'.join(row[...])
+            label= row[...]
+            ...
+            texts.append(text)
+            labels.append(label)
+            ...
+   return (texts[...],labels[...])#최대 199176개
+   """
