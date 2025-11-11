@@ -4,7 +4,7 @@ ai_답변.txt
 data/
 myenv/
 datas/
-models/
+# models/
 tempCodeRunnerFile.py
 __pycache__/
 .vscode
