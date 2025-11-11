@@ -17,6 +17,9 @@ def process():
     data = request.get_json()
     user_input = data.get("input", "")
     
+    if not ready:
+        return jsonify({"result": user_input})
+    
     # 여기에 원하는 처리 로직 넣기 (AI, 수식, 텍스트 처리 등)
     s= user_input
 
@@ -30,9 +33,11 @@ def process():
     return jsonify({"result": label})
 
 if __name__ == "__main__":
+    ready= False
     fileName= file_name()
     path = os.path.join(real_path, "models", fileName)
     loadedModel= modelLoad(path=path)
     getVec_steps= preparePre()
+    ready= True
 
     app.run(debug=True)
