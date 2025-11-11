@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Flask API 테스트</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 100px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>댓글 긍정 부정 테스트기</h1>
+  <input type="text" id="userInput" placeholder="문자열 입력..." />
+  <button onclick="sendToFlask()">보내기</button>
+  <p id="result">결과가 여기에 표시됩니다.</p>
+
+  <script>
+    async function sendToFlask() {
+      const input = document.getElementById("userInput").value;
+      if (!input) return alert("입력값을 써주세요!");
+
+      const response = await fetch("http://127.0.0.1:5000/api/getResult", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ input: input })  // 또는 { input }
+      });
+
+      const data = await response.json();
+      document.getElementById("result").innerText = "결과: " + data.result;
+    }
+  </script>
+</body>
+</html>
