@@ -3,10 +3,11 @@ FROM python:3.13-slim
 
 # 2️⃣ 시스템 의존성 설치 (Java 포함)
 RUN apt-get update && apt-get install -y \
-    openjdk-17-jre-headless \
-    && apt-get clean \
+    default-jdk \
+    curl \
+    unzip \
     && rm -rf /var/lib/apt/lists/*
-
+    
 # 3️⃣ JAVA_HOME 환경 변수 설정
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH="$JAVA_HOME/bin:$PATH"
