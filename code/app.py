@@ -28,7 +28,6 @@ def process():
 
     predictions = loadedModel.predict(new_vec)
     label =  res[int(predictions[0])]
-    print(f'"{s}" → {label}')
 
     return jsonify({"result": label})
 
@@ -41,4 +40,4 @@ getVec_steps= preparePre()
 
 ready= True
 
-app.run(host="0.0.0.0", port=5000)
+#app.run(host="0.0.0.0", port=5000)

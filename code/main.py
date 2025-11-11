@@ -84,7 +84,7 @@ if __name__ == "__main__":
         
         if n_gram:
             log("n-gram 적용 중...")
-            pre_texts = multi_decorator(feature_extraction.nGram_setting)(pre_texts)
+            pre_texts = feature_extraction.nGram_setting_mul(pre_texts)
 
         log("사전 작업 진행 중...")
         extracton_pre_texts = process_data(pre_texts, extraction_pre_steps)
@@ -184,7 +184,7 @@ if __name__ == "__main__":
         getVec_steps = list(chain.from_iterable(
             [
                 pre_steps,
-                [multi_decorator(feature_extraction.nGram_setting)] if n_gram else [],
+                [feature_extraction.nGram_setting_mul] if n_gram else [],
                 extraction_steps,
             ]
         )) #전처리 / 벡터화 

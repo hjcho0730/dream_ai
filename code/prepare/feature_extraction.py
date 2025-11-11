@@ -1,7 +1,15 @@
 from func.utils import *
+from func.main_func import multi_decorator
 
 #region Bag of Words (BoW, 단어 빈도 기반)
 def vocabularyCreate(tokenized_document):
+    global vocabulary
+    for doc in tokenized_document:
+        vocabulary.add(doc)
+    return tokenized_document
+
+@multi_decorator
+def vocabularyCreate_mul(tokenized_document):
     global vocabulary
     for doc in tokenized_document:
         vocabulary.add(doc)
@@ -38,6 +46,15 @@ def nGram_setting(tokenized_document):
         if len(tokenized_document) >= n:
             ngram_tokens.extend(''.join(tokenized_document[i:i+n]) for i in range(len(tokenized_document)-n+1))
     return ngram_tokens
+
+@multi_decorator
+def nGram_setting_mul(tokenized_document):
+    max_n = 2
+    ngram_tokens = []
+    for n in range(1, max_n+1):
+        if len(tokenized_document) >= n:
+            ngram_tokens.extend(''.join(tokenized_document[i:i+n]) for i in range(len(tokenized_document)-n+1))
+    return ngram_tokens
 #endregion
 #TF-IDF (단어 빈도 vs 문서 중요도)
 def TF_IDF_init(bow_matrix):
@@ -62,7 +79,6 @@ def prune_low_tfidf(tfidf_matrix: csr_matrix, threshold: float = 0.005) -> csr_m
 #BERT 계열 임베딩 (Contextual Embedding)
 
 def getNoramlPrePipeline(using_extraction):
-    from func.main_func import multi_decorator
 
     extraction_List = ["BoW", "TF-IDF"]
     if using_extraction not in extraction_List:
@@ -71,13 +87,13 @@ def getNoramlPrePipeline(using_extraction):
     extraction_pre_steps = []
     if using_extraction == "BoW":
         extraction_pre_steps = [
-            multi_decorator(vocabularyCreate), #사전 제작
+            vocabularyCreate_mul, #사전 제작
             vocabularyToDict,
             deleteTopN,
         ]
     elif using_extraction == "TF-IDF":
         extraction_pre_steps = [
-            multi_decorator(vocabularyCreate),
+            vocabularyCreate_mul,
             vocabularyToDict,
             deleteTopN,
             document_to_vector,

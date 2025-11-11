@@ -21,16 +21,16 @@ def modelLoad(path):
     return loadedModel
 
 def preparePre():
-    from func.main_func import multi_decorator
     from prepare import preprocessing, feature_extraction
     pre_steps = preprocessing.getNoramlPipeline(using_analyzer=using_analyzer) #pipeline
     extraction_steps = feature_extraction.getNoramlPipeline(using_extraction) #pipeline
 
+    from func.main_func import multi_decorator
     #pipeline
     getVec_steps = list(chain.from_iterable(
         [
             pre_steps,
-            [multi_decorator(feature_extraction.nGram_setting)] if n_gram else [],
+            [feature_extraction.nGram_setting_mul] if n_gram else [],
             extraction_steps,
         ]
     )) #전처리 / 벡터화

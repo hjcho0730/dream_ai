@@ -1,8 +1,22 @@
 from func.utils import *
 from typing import Final, Any
+from func.main_func import multi_decorator
 
 #region 정규화-특수문자(마침표 등) 제거
 def clean_text(text): 
+    import re
+    _text = deepcopy(text)
+    if type(_text) == type("string"):
+        _text = re.sub(r"[^가-힣a-zA-Z0-9\s]", "", _text)  # 한글, 영문, 숫자, 공백 제외 모두 제거
+        _text = re.sub(r"\s+", " ", _text).strip()  # 연속 공백 1개로 치환
+    elif type(_text) == type(list()):
+        for i in range(len(_text)):
+            t = re.sub(r"[^가-힣a-zA-Z0-9\s]", "", _text[i])  # 한글, 영문, 숫자, 공백 제외 모두 제거
+            _text[i] = re.sub(r"\s+", " ", t).strip()  # 연속 공백 1개로 치환
+    return _text
+
+@multi_decorator
+def clean_text_mul(text): 
     import re
     _text = deepcopy(text)
     if type(_text) == type("string"):
@@ -41,11 +55,20 @@ def getAnalyzers(st):
                 analyzers[st]= Hannanum()
             return analyzers[st]
     raise "There is not that model. please check the name"
+
 def posToStr(pos: list[tuple[str]]) -> list[tuple[str]]:
     _pos = pos[:]
     for i in range(len(_pos)):
         _pos[i] = ''.join([_pos[i][0], "/", _pos[i][1]])
     return _pos
+
+@multi_decorator
+def posToStr_mul(pos: list[tuple[str]]) -> list[tuple[str]]:
+    _pos = pos[:]
+    for i in range(len(_pos)):
+        _pos[i] = ''.join([_pos[i][0], "/", _pos[i][1]])
+    return _pos
+
 #endregion
 
 # (임시) 불용어
@@ -64,11 +87,10 @@ def non_meaning_remove(text):
     return _text
 
 def getNoramlPipeline(using_analyzer):
-    from func.main_func import multi_decorator
     pre_steps = [
-        multi_decorator(clean_text), #정규화
+        clean_text_mul, #정규화
         multi_decorator(getAnalyzers(using_analyzer).pos), #형태소 분석
-        multi_decorator(posToStr),
+        posToStr_mul,
         # multi_decorator(preprocessing.non_meaning_remove) #불용어
     ]
 
