@@ -1,10 +1,15 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from modelLoad import modelLoad, preparePre, file_name
 from func.utils import *
 from func.main_func import process_data, res
 from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
+
+@app.route("/")
+def index():
+    # index.html 파일 렌더링
+    return render_template("index.html")
 
 @app.route("/api/getResult", methods=["POST"])
 def process():
