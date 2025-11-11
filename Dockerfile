@@ -1,27 +1,31 @@
-# Python 3.13 slim 버전 사용
+# 1️⃣ 베이스 이미지: Python 3.13 slim
 FROM python:3.13-slim
 
-# 시스템 의존성 설치
+# 2️⃣ 시스템 의존성 설치 (Java 포함)
 RUN apt-get update && apt-get install -y \
     default-jdk \
     curl \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# 작업 디렉토리
+# 3️⃣ JAVA_HOME 환경 변수 설정
+ENV JAVA_HOME=/usr/lib/jvm/default-java
+ENV PATH="$JAVA_HOME/bin:$PATH"
+
+# 4️⃣ 작업 디렉토리
 WORKDIR /app
 
-# requirements.txt 복사 및 설치
+# 5️⃣ requirements.txt 복사 및 설치
 COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# 앱 소스 복사
+# 6️⃣ 앱 소스 복사
 COPY . .
 
-# Flask 환경 변수
+# 7️⃣ Flask 환경 변수
 ENV FLASK_APP=code/app.py
 ENV FLASK_RUN_HOST=0.0.0.0
 
-# 앱 실행
+# 8️⃣ 앱 실행
 CMD ["flask", "run"]
