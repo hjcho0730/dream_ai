@@ -32,7 +32,7 @@
       const input = document.getElementById("userInput").value;
       if (!input) return alert("입력값을 써주세요!");
 
-      const response = await fetch("dream-ai-bgi2.onrender.com/api/getResult", {
+      const response = await fetch("https://dream-ai-bgi2.onrender.com/api/getResult", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
