@@ -3,7 +3,8 @@ from modelLoad import modelLoad, preparePre, file_name
 from func.utils import *
 from func.main_func import process_data, res
 from flask_cors import CORS
-app = Flask(__name__)
+import os
+app = Flask(__name__, template_folder=os.path.join(os.path.dirname(os.path.dirname(__file__)), 'templates'))
 CORS(app)
 
 @app.route("/")
