@@ -32,12 +32,11 @@ def process():
 
     return jsonify({"result": label})
 
-if __name__ == "__main__":
-    ready= False
-    fileName= file_name()
-    path = os.path.join(real_path, "models", fileName)
-    loadedModel= modelLoad(path=path)
-    getVec_steps= preparePre()
-    ready= True
+ready= False
+fileName= file_name()
+path = os.path.join(real_path, "models", fileName)
+loadedModel= modelLoad(path=path)
+getVec_steps= preparePre()
+ready= True
 
-    app.run(host="0.0.0.0", port=5000)
+app.run(host="0.0.0.0", port=5000)
