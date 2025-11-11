@@ -21,11 +21,11 @@ def modelLoad(path):
     return loadedModel
 
 def preparePre():
-    from prepare import preprocessing, feature_extraction
+    from prepare import preprocessing
     pre_steps = preprocessing.getNoramlPipeline(using_analyzer=using_analyzer) #pipeline
+    from prepare import feature_extraction
     extraction_steps = feature_extraction.getNoramlPipeline(using_extraction) #pipeline
 
-    from func.main_func import multi_decorator
     #pipeline
     getVec_steps = list(chain.from_iterable(
         [

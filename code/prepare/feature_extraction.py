@@ -103,8 +103,6 @@ def getNoramlPrePipeline(using_extraction):
     return extraction_pre_steps
 
 def getNoramlPipeline(using_extraction):
-    from func.main_func import multi_decorator
-
     extraction_List = ["BoW", "TF-IDF"]
     if using_extraction not in extraction_List:
         return []
